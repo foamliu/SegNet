@@ -10,8 +10,8 @@ from config import batch_size
 from config import img_cols
 from config import img_rows
 
-train_color = '../../data/cvpr-2018-autonomous-driving/train_color'
-train_label = '../../data/cvpr-2018-autonomous-driving/train_label'
+train_color = 'train_color'
+train_label = 'train_label'
 
 class_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus',
               40: 'tricycle'}
@@ -102,7 +102,7 @@ def shuffle_data():
     num_samples = 39222
     num_train_samples = 31378
     num_valid_samples = 7844
-    train_folder = '../../data/cvpr-2018-autonomous-driving/train_color'
+    train_folder = 'train_color'
     names = [f for f in os.listdir(train_folder) if f.endswith('.jpg')]
     valid_names = random.sample(names, num_valid_samples)
     train_names = [n for n in names if n not in valid_names]
