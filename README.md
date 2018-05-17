@@ -12,6 +12,10 @@ This repository is to take CVPR 2018 WAD Video Segmentation Challenge with SegNe
 
 Follow the [instruction](https://www.kaggle.com/c/cvpr-2018-autonomous-driving/data) to download dataset.
 
+```bash
+$ kaggle competitions download -c cvpr-2018-autonomous-driving -p /mnt/data
+```
+
 ## Architecture
 
 ![image](https://github.com/foamliu/SegNet/raw/master/images/segnet.jpg)

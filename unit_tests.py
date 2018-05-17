@@ -7,7 +7,8 @@ from data_generator import train_gen
 class TestStringMethods(unittest.TestCase):
 
     def test_data_generator(self):
-        batch_x, batch_y = train_gen()
+        iter = train_gen()
+        batch_x, batch_y = next(iter)
         for i in range(len(batch_x)):
             x = batch_x[i]
             y = batch_y[i]
