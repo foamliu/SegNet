@@ -7,7 +7,7 @@ from PIL import Image
 
 ROOT = '../../data/cvpr-2018-autonomous-driving'
 image_path = os.path.join(ROOT, 'train_color/170908_061523257_Camera_5.jpg')
-im = im = Image.open(image_path)
+im = Image.open(image_path)
 tlabel_path = os.path.join(ROOT, "train_label/170908_061523257_Camera_5_instanceIds.png")
 tlabel = np.asarray(Image.open(tlabel_path)) // 1000
 tlabel[tlabel != 0] = 255

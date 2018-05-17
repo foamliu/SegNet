@@ -12,6 +12,11 @@ This repository is to take CVPR 2018 WAD Video Segmentation Challenge with SegNe
 
 Follow the [instruction](https://www.kaggle.com/c/cvpr-2018-autonomous-driving/data) to download dataset.
 
+## Architecture
+
+![image](https://github.com/foamliu/SegNet/raw/master/images/segnet.jpg)
+
+
 ## ImageNet Pretrained Models
 Download [VGG16](https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5) into models folder.
 
