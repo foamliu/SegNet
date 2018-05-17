@@ -4,6 +4,7 @@ from random import shuffle
 
 import cv2 as cv
 import numpy as np
+from PIL import Image
 
 from config import batch_size
 from config import img_cols
@@ -12,16 +13,26 @@ from config import img_rows
 train_color = '../../data/cvpr-2018-autonomous-driving/train_color'
 train_label = '../../data/cvpr-2018-autonomous-driving/train_label'
 
+class_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus',
+              40: 'tricycle'}
+inv_dict = {v: k for k, v in class_dict.items()}
+gray_scales = {'other': 0, 'person': 255, 'car': 224, 'bus': 192, 'truck': 160,
+                   'motorbicycle': 128, 'bicycle': 96, 'tricycle': 64}
+
 
 def get_label(name):
-    filename = os.path.join(train_label, name)
-    label = cv.imread(filename)
+    label_name = name.split('.')[0] + '_instanceIds.png'
+    filename = os.path.join(train_label, label_name)
+    label = np.asarray(Image.open(filename)) // 1000
+    for class_name in ['person', 'car', 'bus', 'truck', 'motorbicycle', 'bicycle', 'tricycle']:
+        label[label == inv_dict[class_name]] = gray_scales[class_name]
+    label[(label != 255) & (label != 224) & (label != 192) & (label != 160) & (label != 128) & (label != 96) & (label != 64)] = 0
     return label
 
 
 # Randomly crop 320x320 (image, label) pairs centered on pixels in the known regions.
 def random_choice(label):
-    y_indices, x_indices = np.where(label == 0)
+    y_indices, x_indices = np.where(label != 0)
     num_knowns = len(y_indices)
     x, y = 0, 0
     if num_knowns > 0:
@@ -58,12 +69,11 @@ def data_gen(usage):
             name = names[i]
             filename = os.path.join(train_color, name)
             image = cv.imread(filename)
-            h, w = image.shape[:2]
-
             label = get_label(name)
 
             x, y = random_choice(label)
             image = safe_crop(image, x, y)
+            label = safe_crop(label, x, y)
 
             if np.random.random_sample() > 0.5:
                 image = np.fliplr(image)
