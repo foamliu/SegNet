@@ -2,3 +2,9 @@
 __pycache__/
 temp/
 models/
+list_test/
+list_test_mapping/
+sample_submission.csv
+test/
+train_color/
+train_label/
