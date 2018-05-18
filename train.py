@@ -28,7 +28,7 @@ if __name__ == '__main__':
         def on_epoch_end(self, epoch, logs=None):
             fmt = checkpoint_models_path + 'model.%02d-%.4f.hdf5'
             self.model_to_save.save(fmt % (epoch, logs['val_loss']))
-            
+
 
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
