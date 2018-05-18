@@ -46,3 +46,19 @@ $ tensorboard --logdir path_to_current_dir/logs
 ```bash
 $ python demo.py
 ```
+
+Then check results in images folder, something like:
+
+Input | GT | Output |
+|---|---|---|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/0_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/0_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/0_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/1_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/1_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/1_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/2_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/2_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/2_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/3_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/3_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/3_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/4_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/4_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/4_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/5_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/5_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/5_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/6_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/6_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/6_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/7_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/7_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/7_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/8_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/8_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/8_out.png)|
+|![image](https://github.com/foamliu/SegNet/raw/master/images/9_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/9_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/9_out.png)|
+
