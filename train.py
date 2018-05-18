@@ -5,7 +5,6 @@ import migrate
 from config import patience, batch_size, epochs, num_train_samples, num_valid_samples
 from data_generator import train_gen, valid_gen
 from model import build_encoder_decoder
-from utils import custom_loss
 
 if __name__ == '__main__':
     checkpoint_models_path = 'models/'
@@ -20,7 +19,7 @@ if __name__ == '__main__':
     model = build_encoder_decoder()
     migrate.migrate_model(model)
 
-    model.compile(optimizer='nadam', loss=custom_loss)
+    model.compile(optimizer='nadam', loss='categorical_crossentropy')
 
     print(model.summary())
 

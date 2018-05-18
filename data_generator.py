@@ -13,11 +13,13 @@ from config import img_rows
 train_color = 'train_color'
 train_label = 'train_label'
 
-class_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus',
-              40: 'tricycle'}
-inv_dict = {v: k for k, v in class_dict.items()}
-gray_scales = {'other': 0, 'person': 255, 'car': 224, 'bus': 192, 'truck': 160,
-               'motorbicycle': 128, 'bicycle': 96, 'tricycle': 64}
+num_labels = 8
+decode_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus', 40: 'tricycle'}
+encode_dict = {'others': 0, 'car': 1, 'motorbicycle': 2, 'bicycle': 3, 'person': 4, 'truck': 5, 'bus': 6, 'tricycle': 7}
+
+
+def get_id(old_id):
+    return encode_dict[decode_dict[old_id]]
 
 
 def get_label(name, path=''):
@@ -25,11 +27,19 @@ def get_label(name, path=''):
     path = os.path.join(path, train_label)
     filename = os.path.join(path, label_name)
     label = np.asarray(Image.open(filename)) // 1000
-    for class_name in ['person', 'car', 'bus', 'truck', 'motorbicycle', 'bicycle', 'tricycle']:
-        label[label == inv_dict[class_name]] = gray_scales[class_name]
-    label[(label != 255) & (label != 224) & (label != 192) & (label != 160) & (label != 128) & (label != 96) & (
-                label != 64)] = 0
+    label[(label != 0) & (label != 33) & (label != 34) & (label != 35) & (label != 36) & (label != 38) & (label != 39) & (label != 40)] = 0
     return label
+
+
+def get_label_map(label):
+    label_map = np.zeros([320, 320, num_labels])
+    y_indices, x_indices = np.where(label != 0)
+    for i in range(len(x_indices)):
+        c = x_indices[i]
+        r = y_indices[i]
+        label_map[r, c, get_id(label[r][c])] = 1
+
+    return label_map
 
 
 # Randomly crop 320x320 (image, label) pairs centered on pixels in the known regions.
@@ -65,7 +75,7 @@ def data_gen(usage):
     i = 0
     while True:
         batch_x = np.empty((batch_size, img_rows, img_cols, 3), dtype=np.float32)
-        batch_y = np.empty((batch_size, img_rows, img_cols, 1), dtype=np.float32)
+        batch_y = np.empty((batch_size, img_rows, img_cols, num_labels), dtype=np.float32)
 
         for i_batch in range(batch_size):
             # print(i_batch)
@@ -82,8 +92,10 @@ def data_gen(usage):
                 image = np.fliplr(image)
                 label = np.fliplr(label)
 
+            label_map = get_label_map(label)
+
             batch_x[i_batch, :, :, 0:3] = image / 255.
-            batch_y[i_batch, :, :, 0] = label / 255.
+            batch_y[i_batch, :, :, :] = label_map
 
             i += 1
             if i >= len(names):
