@@ -9,7 +9,7 @@ from data_generator import safe_crop
 from data_generator import get_label
 from data_generator import random_choice
 from model import build_encoder_decoder
-
+from PIL import Image
 if __name__ == '__main__':
     img_rows, img_cols = 320, 320
     channel = 4
@@ -49,6 +49,13 @@ if __name__ == '__main__':
 
         out = np.reshape(out, (img_rows, img_cols))
         out = out * 255.0
+
+        label = cv.cvtColor(label, cv.COLOR_GRAY2BGR)
+        label = image * 0.6 + label * 0.4
+        label = label.astype(np.uint8)
+
+        out = cv.cvtColor(out, cv.COLOR_GRAY2BGR)
+        out = image * 0.6 + out * 0.4
         out = out.astype(np.uint8)
 
         cv.imwrite('images/{}_image.png'.format(i), image)
