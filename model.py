@@ -108,11 +108,8 @@ def build_encoder_decoder():
                bias_initializer='zeros')(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(num_labels, (1, 1), padding='valid', name='deconv0', kernel_initializer='he_normal',
+    x = Conv2D(num_labels, (1, 1), activation='softmax', padding='valid', name='pred', kernel_initializer='he_normal',
                bias_initializer='zeros')(x)
-    x = Reshape((num_labels, 320 * 320))(x)
-    x = Permute((2, 1))(x)
-    x = Activation('softmax', name='pred')(x)
 
     model = Model(inputs=input_tensor, outputs=x)
     return model
