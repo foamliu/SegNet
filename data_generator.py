@@ -85,12 +85,12 @@ def data_gen(usage):
             height, width = image.shape[:2]
             label = get_label(name)
 
-            if np.random.random_sample() > 0.5:
-                x, y = random_choice(label)
-            else:
-                # have a better understanding in 'others'
-                x = random.randint(0, width - 320)
-                y = random.randint(0, height - 320)
+            # if np.random.random_sample() > 0.5:
+            x, y = random_choice(label)
+            # else:
+            #     # have a better understanding in 'others'
+            #     x = random.randint(0, width - 320)
+            #     y = random.randint(0, height - 320)
 
             image = safe_crop(image, x, y)
             label = safe_crop(label, x, y)
