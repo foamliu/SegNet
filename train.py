@@ -30,18 +30,18 @@ if __name__ == '__main__':
             self.model_to_save.save(fmt % (epoch, logs['val_acc']))
 
 
-    num_gpu = len(get_available_gpus())
-    if num_gpu >= 2:
-        with tf.device("/cpu:0"):
-            model = build_encoder_decoder()
-            migrate.migrate_model(model)
-
-        new_model = multi_gpu_model(model, gpus=num_gpu)
-        # rewrite the callback: saving through the original model and not the multi-gpu model.
-        model_checkpoint = MyCbk(model)
-    else:
-        model = build_encoder_decoder()
-        migrate.migrate_model(model)
+    # num_gpu = len(get_available_gpus())
+    # if num_gpu >= 2:
+    #     with tf.device("/cpu:0"):
+    #         model = build_encoder_decoder()
+    #         migrate.migrate_model(model)
+    #
+    #     new_model = multi_gpu_model(model, gpus=num_gpu)
+    #     # rewrite the callback: saving through the original model and not the multi-gpu model.
+    #     model_checkpoint = MyCbk(model)
+    # else:
+    model = build_encoder_decoder()
+    migrate.migrate_model(model)
 
     model.compile(optimizer='nadam', loss='categorical_crossentropy', metrics=['accuracy'])
 
