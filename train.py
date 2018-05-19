@@ -5,7 +5,7 @@ import migrate
 from config import patience, batch_size, epochs, num_train_samples, num_valid_samples
 from data_generator import train_gen, valid_gen
 from model import build_encoder_decoder
-from utils import get_available_cpus
+from utils import get_available_cpus, sparse_cross_entropy
 
 if __name__ == '__main__':
     checkpoint_models_path = 'models/'
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     model = build_encoder_decoder()
     migrate.migrate_model(model)
 
-    model.compile(optimizer='nadam', loss='sparse_softmax_cross_entropy_with_logits', metrics=['accuracy'])
+    model.compile(optimizer='nadam', loss=sparse_cross_entropy, metrics=['accuracy'])
 
     print(model.summary())
 

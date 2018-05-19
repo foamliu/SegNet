@@ -32,12 +32,12 @@ def get_label(name, path=''):
 
 
 def get_label_map(label):
-    label_map = np.zeros([320, 320, num_labels])
+    label_map = np.zeros([320, 320])
     y_indices, x_indices = np.where(label != 0)
     for i in range(len(x_indices)):
         c = x_indices[i]
         r = y_indices[i]
-        label_map[r, c, get_id(label[r][c])] = 1
+        label_map[r, c] = get_id(label[r][c])
 
     return label_map
 
@@ -75,7 +75,7 @@ def data_gen(usage):
     i = 0
     while True:
         batch_x = np.empty((batch_size, img_rows, img_cols, 3), dtype=np.float32)
-        batch_y = np.empty((batch_size, img_rows, img_cols, num_labels), dtype=np.float32)
+        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.float32)
 
         for i_batch in range(batch_size):
             # print(i_batch)
@@ -102,7 +102,7 @@ def data_gen(usage):
             label_map = get_label_map(label)
 
             batch_x[i_batch, :, :, 0:3] = image / 255.
-            batch_y[i_batch, :, :, :] = label_map
+            batch_y[i_batch, :, :] = label_map
 
             i += 1
             if i >= len(names):
