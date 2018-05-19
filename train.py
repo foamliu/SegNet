@@ -1,13 +1,11 @@
 import keras
-import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
-from keras.utils import multi_gpu_model
 
 import migrate
 from config import patience, batch_size, epochs, num_train_samples, num_valid_samples
 from data_generator import train_gen, valid_gen
 from model import build_encoder_decoder
-from utils import get_available_gpus, get_available_cpus
+from utils import get_available_cpus, pixelwise_crossentropy
 
 if __name__ == '__main__':
     checkpoint_models_path = 'models/'
@@ -43,7 +41,7 @@ if __name__ == '__main__':
     model = build_encoder_decoder()
     migrate.migrate_model(model)
 
-    model.compile(optimizer='nadam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='nadam', loss=pixelwise_crossentropy, metrics=['accuracy'])
 
     print(model.summary())
 
