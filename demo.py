@@ -52,7 +52,7 @@ if __name__ == '__main__':
         out = np.argmax(out, axis=2)
         for r in range(320):
             for c in range(320):
-                out[r, c] = colors[out[r, c]]
+                out[r, c, :] = colors[out[r, c]]
 
         label = cv.cvtColor(label, cv.COLOR_GRAY2BGR)
         label = image * 0.6 + label * 0.4
