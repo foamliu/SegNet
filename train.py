@@ -1,4 +1,5 @@
 import keras
+import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 
 import migrate
@@ -41,7 +42,8 @@ if __name__ == '__main__':
     model = build_encoder_decoder()
     migrate.migrate_model(model)
 
-    model.compile(optimizer='nadam', loss=sparse_cross_entropy, metrics=['accuracy'])
+    decoder_target = tf.placeholder(dtype='int32', shape=(None, None, None))
+    model.compile(optimizer='nadam', loss=sparse_cross_entropy, target_tensors=[decoder_target])
 
     print(model.summary())
 

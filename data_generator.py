@@ -32,7 +32,7 @@ def get_label(name, path=''):
 
 
 def get_y(label):
-    y = np.zeros(shape=(320, 320), dtype=np.int64)
+    y = np.zeros(shape=(320, 320), dtype=np.int32)
     y_indices, x_indices = np.where(label != 0)
     for i in range(len(x_indices)):
         c = x_indices[i]
@@ -76,7 +76,7 @@ def data_gen(usage):
     np.random.shuffle(names)
     while True:
         batch_x = np.empty((batch_size, img_rows, img_cols, 3), dtype=np.float32)
-        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.int64)
+        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.int32)
 
         for i_batch in range(batch_size):
             # print(i_batch)
