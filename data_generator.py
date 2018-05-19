@@ -31,8 +31,8 @@ def get_label(name, path=''):
     return label
 
 
-def get_label_map(label):
-    label_map = np.zeros([320, 320])
+def get_y(label):
+    label_map = np.zeros(shape=(320, 320), dtype=np.float32)
     y_indices, x_indices = np.where(label != 0)
     for i in range(len(x_indices)):
         c = x_indices[i]
@@ -73,16 +73,16 @@ def data_gen(usage):
     with open(filename, 'r') as f:
         names = f.read().splitlines()
     i = 0
+    np.random.shuffle(names)
     while True:
         batch_x = np.empty((batch_size, img_rows, img_cols, 3), dtype=np.float32)
-        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.float32)
+        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.int64)
 
         for i_batch in range(batch_size):
             # print(i_batch)
             name = names[i]
             filename = os.path.join(train_color, name)
             image = cv.imread(filename)
-            height, width = image.shape[:2]
             label = get_label(name)
 
             # if np.random.random_sample() > 0.5:
@@ -99,14 +99,16 @@ def data_gen(usage):
                 image = np.fliplr(image)
                 label = np.fliplr(label)
 
-            label_map = get_label_map(label)
+            x = image / 255.
+            y = get_y(label)
 
-            batch_x[i_batch, :, :, 0:3] = image / 255.
-            batch_y[i_batch, :, :] = label_map
+            batch_x[i_batch, :, :, 0:3] = x
+            batch_y[i_batch, :, :] = y
 
             i += 1
             if i >= len(names):
                 i = 0
+                np.random.shuffle(names)
 
         yield batch_x, batch_y
 
