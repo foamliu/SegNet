@@ -15,7 +15,7 @@ if __name__ == '__main__':
     img_rows, img_cols = 320, 320
     num_labels = 8
 
-    model_weights_path = 'models/model.06-0.0528.hdf5'
+    model_weights_path = 'models/model.10-0.1997.hdf5'
     model = build_encoder_decoder()
 
     model.load_weights(model_weights_path)
@@ -26,8 +26,8 @@ if __name__ == '__main__':
         names = f.read().splitlines()
     samples = random.sample(names, 10)
 
-    root_path = '../../data/cvpr-2018-autonomous-driving/'
-    valid_path = '../../data/cvpr-2018-autonomous-driving/train_color/'
+    root_path = ''
+    valid_path = 'train_color/'
 
     for i in range(len(samples)):
         image_name = samples[i]
