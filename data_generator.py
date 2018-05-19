@@ -32,28 +32,28 @@ def get_label(name, path=''):
 
 
 def get_y(label):
-    label_map = np.zeros(shape=(320, 320), dtype=np.float32)
+    y = np.zeros(shape=(320, 320), dtype=np.int64)
     y_indices, x_indices = np.where(label != 0)
     for i in range(len(x_indices)):
         c = x_indices[i]
         r = y_indices[i]
-        label_map[r, c] = get_id(label[r][c])
+        y[r, c] = get_id(label[r][c])
 
-    return label_map
+    return y
 
 
 # Randomly crop 320x320 (image, label) pairs centered on pixels in the known regions.
 def random_choice(label):
     y_indices, x_indices = np.where(label != 0)
     num_knowns = len(y_indices)
-    x, y = 0, 0
+    c, r = 0, 0
     if num_knowns > 0:
         ix = random.choice(range(num_knowns))
         center_x = x_indices[ix]
         center_y = y_indices[ix]
-        x = max(0, center_x - 160)
-        y = max(0, center_y - 160)
-    return x, y
+        c = max(0, center_x - 160)
+        r = max(0, center_y - 160)
+    return c, r
 
 
 def safe_crop(mat, x, y):
@@ -86,14 +86,14 @@ def data_gen(usage):
             label = get_label(name)
 
             # if np.random.random_sample() > 0.5:
-            x, y = random_choice(label)
+            c, r = random_choice(label)
             # else:
             #     # have a better understanding in 'others'
             #     x = random.randint(0, width - 320)
             #     y = random.randint(0, height - 320)
 
-            image = safe_crop(image, x, y)
-            label = safe_crop(label, x, y)
+            image = safe_crop(image, c, r)
+            label = safe_crop(label, c, r)
 
             if np.random.random_sample() > 0.5:
                 image = np.fliplr(image)
@@ -101,6 +101,7 @@ def data_gen(usage):
 
             x = image / 255.
             y = get_y(label)
+            print('y.shape: ' + str(y.shape))
 
             batch_x[i_batch, :, :, 0:3] = x
             batch_y[i_batch, :, :] = y
@@ -121,9 +122,9 @@ def valid_gen():
     return data_gen('valid')
 
 
-def shuffle_data():
-    num_samples = 39222
-    num_train_samples = 31378
+def split_data():
+    # num_samples = 39222
+    # num_train_samples = 31378
     num_valid_samples = 7844
     train_folder = 'train_color'
     names = [f for f in os.listdir(train_folder) if f.endswith('.jpg')]
@@ -140,4 +141,4 @@ def shuffle_data():
 
 
 if __name__ == '__main__':
-    shuffle_data()
+    split_data()
