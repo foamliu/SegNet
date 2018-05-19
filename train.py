@@ -55,6 +55,7 @@ if __name__ == '__main__':
                         steps_per_epoch=num_train_samples // batch_size,
                         validation_data=valid_gen(),
                         validation_steps=num_valid_samples // batch_size,
+                        shuffle=True,
                         epochs=epochs,
                         verbose=1,
                         callbacks=callbacks,
