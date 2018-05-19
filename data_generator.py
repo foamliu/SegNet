@@ -101,7 +101,7 @@ def data_gen(usage):
 
             x = image / 255.
             y = get_y(label)
-            print('y.shape: ' + str(y.shape))
+            # print('y.shape: ' + str(y.shape))
 
             batch_x[i_batch, :, :, 0:3] = x
             batch_y[i_batch, :, :] = y
