@@ -50,19 +50,20 @@ if __name__ == '__main__':
 
         out = np.reshape(out, (img_rows, img_cols, num_labels))
         out = np.argmax(out, axis=2)
+        ret = np.array((img_rows, img_cols, 3), np.float32)
         for r in range(320):
             for c in range(320):
-                out[r, c, :] = colors[out[r, c]]
+                ret[r, c, :] = colors[out[r, c]]
 
         label = cv.cvtColor(label, cv.COLOR_GRAY2BGR)
         label = image * 0.6 + label * 0.4
         label = label.astype(np.uint8)
 
-        out = image * 0.6 + out * 0.4
-        out = out.astype(np.uint8)
+        ret = image * 0.6 + ret * 0.4
+        ret = ret.astype(np.uint8)
 
         cv.imwrite('images/{}_image.png'.format(i), image)
-        cv.imwrite('images/{}_out.png'.format(i), out)
+        cv.imwrite('images/{}_out.png'.format(i), ret)
         cv.imwrite('images/{}_label.png'.format(i), label)
 
     K.clear_session()
