@@ -50,12 +50,12 @@ if __name__ == '__main__':
 
         out = np.reshape(out, (img_rows, img_cols, num_labels))
         out = np.argmax(out, axis=2)
-        print("out.shape: " + str(out.shape))
+        # print("out.shape: " + str(out.shape))
         ret = np.zeros((img_rows, img_cols, 3), np.float32)
         for r in range(320):
             for c in range(320):
                 color_id = out[r, c]
-                print("color_id: " + str(color_id))
+                # print("color_id: " + str(color_id))
                 ret[r, c, :] = colors[color_id]
 
         label = cv.cvtColor(label, cv.COLOR_GRAY2BGR)
