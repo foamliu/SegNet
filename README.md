@@ -18,7 +18,7 @@ $ kaggle competitions download -c cvpr-2018-autonomous-driving -p /mnt/data
 
 ## Architecture
 
-![image](https://github.com/foamliu/SegNet/raw/master/images/segnet.jpg)
+![image](https://github.com/foamliu/SegNet/raw/master/images/segnet.png)
 
 
 ## ImageNet Pretrained Models
