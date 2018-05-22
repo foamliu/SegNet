@@ -62,12 +62,11 @@ if __name__ == '__main__':
         ret = image * 0.6 + ret * 0.4
         ret = ret.astype(np.uint8)
 
-        label_map = get_y(label)
-        label_map = np.argmax(label_map, axis=2)
+        y = get_y(label)
         label = np.zeros((img_rows, img_cols, 3), np.float32)
         for r in range(320):
             for c in range(320):
-                color_id = label_map[r, c]
+                color_id = y[r, c]
                 # print("color_id: " + str(color_id))
                 label[r, c, :] = colors[color_id]
 
