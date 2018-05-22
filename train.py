@@ -54,8 +54,9 @@ if __name__ == '__main__':
         model = build_encoder_decoder()
         migrate.migrate_model(model)
 
+    nadam = keras.optimizers.Nadam(lr=0.0002)
     decoder_target = tf.placeholder(dtype='int32', shape=(None, None, None))
-    model.compile(optimizer='nadam', loss=sparse_cross_entropy, target_tensors=[decoder_target])
+    model.compile(optimizer=nadam, loss=sparse_cross_entropy, target_tensors=[decoder_target])
 
     print(model.summary())
 
@@ -72,5 +73,5 @@ if __name__ == '__main__':
                         verbose=1,
                         callbacks=callbacks,
                         use_multiprocessing=True,
-                        workers=int(round(get_available_cpus() / 2))
+                        workers=2
                         )
