@@ -1,3 +1,5 @@
+import argparse
+
 import keras
 import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
@@ -10,6 +12,12 @@ from utils import get_available_cpus, sparse_cross_entropy
 
 if __name__ == '__main__':
     checkpoint_models_path = 'models/'
+
+    # Parse arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-p", "--pretrained", help="path to save pretrained model files")
+    args = vars(ap.parse_args())
+    pretrained_path = args["pretrained"]
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
@@ -39,8 +47,12 @@ if __name__ == '__main__':
     #     # rewrite the callback: saving through the original model and not the multi-gpu model.
     #     model_checkpoint = MyCbk(model)
     # else:
-    model = build_encoder_decoder()
-    migrate.migrate_model(model)
+    if pretrained_path is not None:
+        model = build_encoder_decoder()
+        model.load_weights(pretrained_path)
+    else:
+        model = build_encoder_decoder()
+        migrate.migrate_model(model)
 
     decoder_target = tf.placeholder(dtype='int32', shape=(None, None, None))
     model.compile(optimizer='nadam', loss=sparse_cross_entropy, target_tensors=[decoder_target])
