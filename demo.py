@@ -7,7 +7,7 @@ import numpy as np
 
 from config import colors
 from data_generator import get_label
-from data_generator import get_label_map
+from data_generator import get_y
 from data_generator import random_choice
 from data_generator import safe_crop
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         ret = image * 0.6 + ret * 0.4
         ret = ret.astype(np.uint8)
 
-        label_map = get_label_map(label)
+        label_map = get_y(label)
         label_map = np.argmax(label_map, axis=2)
         label = np.zeros((img_rows, img_cols, 3), np.float32)
         for r in range(320):
