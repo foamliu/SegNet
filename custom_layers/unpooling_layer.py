@@ -7,7 +7,6 @@ class Unpooling(Layer):
 
     def __init__(self, orig, **kwargs):
         self.orig = orig
-        self.the_shape = K.shape(orig)
         super(Unpooling, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -16,7 +15,7 @@ class Unpooling(Layer):
     def call(self, x, **kwargs):
         # here we're going to reshape the data for a concatenation:
         # xReshaped and origReshaped are now split branches
-        shape = list(self.the_shape)
+        shape = list(K.shape(self.orig))
         shape[0] = 1
         shape = tuple(shape)
         origReshaped = Reshape(shape)(self.orig)
