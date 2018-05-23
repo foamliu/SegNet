@@ -7,7 +7,7 @@ class Unpooling(Layer):
 
     def __init__(self, orig, **kwargs):
         self.orig = orig
-        self.the_shape = orig.output_shape
+        self.the_shape = K.shape(orig)
         super(Unpooling, self).__init__(**kwargs)
 
     def build(self, input_shape):
