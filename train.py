@@ -54,7 +54,7 @@ if __name__ == '__main__':
         model = build_encoder_decoder()
         migrate.migrate_model(model)
 
-    nadam = keras.optimizers.Nadam(lr=0.0002)
+    nadam = keras.optimizers.Nadam()
     decoder_target = tf.placeholder(dtype='int32', shape=(None, None, None))
     model.compile(optimizer=nadam, loss=sparse_cross_entropy, target_tensors=[decoder_target])
 

@@ -5,6 +5,7 @@ from random import shuffle
 import cv2 as cv
 import numpy as np
 from PIL import Image
+from keras.utils import Sequence
 
 from config import batch_size
 from config import img_cols
@@ -14,7 +15,8 @@ train_color = 'train_color'
 train_label = 'train_label'
 
 num_labels = 8
-decode_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus', 40: 'tricycle'}
+decode_dict = {0: 'others', 33: 'car', 34: 'motorbicycle', 35: 'bicycle', 36: 'person', 38: 'truck', 39: 'bus',
+               40: 'tricycle'}
 encode_dict = {'others': 0, 'car': 1, 'motorbicycle': 2, 'bicycle': 3, 'person': 4, 'truck': 5, 'bus': 6, 'tricycle': 7}
 
 
@@ -27,7 +29,9 @@ def get_label(name, path=''):
     path = os.path.join(path, train_label)
     filename = os.path.join(path, label_name)
     label = np.asarray(Image.open(filename)) // 1000
-    label[(label != 0) & (label != 33) & (label != 34) & (label != 35) & (label != 36) & (label != 38) & (label != 39) & (label != 40)] = 0
+    label[
+        (label != 0) & (label != 33) & (label != 34) & (label != 35) & (label != 36) & (label != 38) & (label != 39) & (
+                label != 40)] = 0
     return label
 
 
@@ -68,30 +72,34 @@ def safe_crop(mat, x, y):
     return ret
 
 
-def data_gen(usage):
-    filename = '{}_names.txt'.format(usage)
-    with open(filename, 'r') as f:
-        names = f.read().splitlines()
-    i = 0
-    np.random.shuffle(names)
-    while True:
-        batch_x = np.empty((batch_size, img_rows, img_cols, 3), dtype=np.float32)
-        batch_y = np.empty((batch_size, img_rows, img_cols), dtype=np.int32)
+class DataGenSequence(Sequence):
+    def __init__(self, usage):
+        self.usage = usage
 
-        for i_batch in range(batch_size):
+        filename = '{}_names.txt'.format(usage)
+        with open(filename, 'r') as f:
+            self.names = f.read().splitlines()
+
+        np.random.shuffle(self.names)
+
+    def __len__(self):
+        return int(np.ceil(len(self.names) / float(batch_size)))
+
+    def __getitem__(self, idx):
+        i = idx * batch_size
+
+        length = min(batch_size, (len(self.names) - i))
+        batch_x = np.empty((length, img_rows, img_cols, 3), dtype=np.float32)
+        batch_y = np.empty((length, img_rows, img_cols), dtype=np.int32)
+
+        for i_batch in range(length):
             # print(i_batch)
-            name = names[i]
+            name = self.names[i]
             filename = os.path.join(train_color, name)
             image = cv.imread(filename)
             label = get_label(name)
 
-            # if np.random.random_sample() > 0.5:
             c, r = random_choice(label)
-            # else:
-            #     # have a better understanding in 'others'
-            #     x = random.randint(0, width - 320)
-            #     y = random.randint(0, height - 320)
-
             image = safe_crop(image, c, r)
             label = safe_crop(label, c, r)
 
@@ -107,11 +115,11 @@ def data_gen(usage):
             batch_y[i_batch, :, :] = y
 
             i += 1
-            if i >= len(names):
-                i = 0
-                np.random.shuffle(names)
 
-        yield batch_x, batch_y
+        return batch_x, batch_y
+
+    def on_epoch_end(self):
+        np.random.shuffle(self.names)
 
 
 def train_gen():
