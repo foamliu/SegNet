@@ -62,4 +62,6 @@ Input | GT | Output |
 |![image](https://github.com/foamliu/SegNet/raw/master/images/8_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/8_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/8_out.png)|
 |![image](https://github.com/foamliu/SegNet/raw/master/images/9_image.png)  | ![image](https://github.com/foamliu/SegNet/raw/master/images/9_label.png) | ![image](https://github.com/foamliu/SegNet/raw/master/images/9_out.png)|
 
+Legend:
+
 ![image](https://github.com/foamliu/SegNet/raw/master/images/legend.png)
