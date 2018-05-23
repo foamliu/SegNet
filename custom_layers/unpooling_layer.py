@@ -15,7 +15,8 @@ class Unpooling(Layer):
     def call(self, x, **kwargs):
         # here we're going to reshape the data for a concatenation:
         # xReshaped and origReshaped are now split branches
-        shape = list(K.shape(self.orig))
+        the_shape = K.shape(self.orig)
+        shape = list(the_shape)
         shape[0] = 1
         shape = tuple(shape)
         origReshaped = Reshape(shape)(self.orig)
@@ -27,7 +28,7 @@ class Unpooling(Layer):
         together = Concatenate(axis=1)([origReshaped, xReshaped])
 
         bool_mask = Lambda(lambda t: K.greater_equal(t[:, 0], t[:, 1]),
-                           output_shape=self.the_shape)(together)
+                           output_shape=the_shape)(together)
         mask = Lambda(lambda t: K.cast(t, dtype='float32'))(bool_mask)
 
         x = Multiply()([mask, x])
