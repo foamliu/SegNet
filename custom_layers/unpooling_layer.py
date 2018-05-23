@@ -5,19 +5,22 @@ from keras.layers import Reshape, Concatenate, Lambda, Multiply
 
 class Unpooling(Layer):
 
-    def __init__(self, orig, the_shape, **kwargs):
+    def __init__(self, orig, **kwargs):
         self.orig = orig
-        self.the_shape = the_shape
+        self.the_shape = orig.output_shape
         super(Unpooling, self).__init__(**kwargs)
 
-    def call(self, x):
+    def build(self, input_shape):
+        super(Unpooling, self).build(input_shape)
+
+    def call(self, x, **kwargs):
         # here we're going to reshape the data for a concatenation:
         # xReshaped and origReshaped are now split branches
         shape = list(self.the_shape)
-        shape.insert(0, 1)
+        shape[0] = 1
         shape = tuple(shape)
-        xReshaped = Reshape(shape)(x)
         origReshaped = Reshape(shape)(self.orig)
+        xReshaped = Reshape(shape)(x)
 
         # concatenation - here, you unite both branches again
         # normally you don't need to reshape or use the axis var,
@@ -30,3 +33,6 @@ class Unpooling(Layer):
 
         x = Multiply()([mask, x])
         return x
+
+    def compute_output_shape(self, input_shape):
+        return input_shape
