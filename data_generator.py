@@ -123,11 +123,11 @@ class DataGenSequence(Sequence):
 
 
 def train_gen():
-    return data_gen('train')
+    return DataGenSequence('train')
 
 
 def valid_gen():
-    return data_gen('valid')
+    return DataGenSequence('valid')
 
 
 def split_data():
