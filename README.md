@@ -42,6 +42,7 @@ $ tensorboard --logdir path_to_current_dir/logs
 ```
 
 ### Demo
+Download pre-trained [SegNet Model](https://github.com/foamliu/SegNet/releases/download/v1.0/model.02-1.3243.hdf5) to "models" folder then run:
 
 ```bash
 $ python demo.py
